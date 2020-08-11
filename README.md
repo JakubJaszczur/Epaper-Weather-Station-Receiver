@@ -47,7 +47,9 @@ The project is a part of bigger IOT system. Weather Station receiver measures ba
 
 ### Changelog
 
-### Improvement list
+2020-08-11 V0.1 First Beta Release - not optimized
+
+### Task list
 
 - Software:
 - [ ] Firmware code optimization
