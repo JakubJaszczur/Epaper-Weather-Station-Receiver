@@ -1,16 +1,17 @@
 ## Epaper Weather Station Receiver
 
-### Introduction
+### 1. Introduction
 
 The project is a part of bigger IOT system. Weather Station receiver measures basic parameters, such as temperature, pressure, humidity, but also CO2, TVOC level. Other parameters, like outside temperature, weather forecast can be received by MQTT and displayed on 4.2" Epaper display.
 
-### Features
+
+### 2. Features
 
 - 4.2" E-paper display with additional NeoPixel backlight
 - Li-Ion battery as backup PS
 - Additional fan for better air flow
 - Temperature, humidity, pressure measurements
-- CO2, TVOC level measurementsr
+- CO<sub>2</sub>, TVOC level measurementsr
 - PIR sensor
 - Time, date, sunrise/sunset time display
 - Current weather forecast with description
@@ -19,14 +20,17 @@ The project is a part of bigger IOT system. Weather Station receiver measures ba
 - All displayed parameters/icons can be easily changed
 - All not measured parameters are send to/from weather station by MQTT
 
-### Bill of Materials
+
+### 3. Bill of Materials
+
+Main components:
 
 | Device  		    | Description 	                          | Price		  | 
 | --------------- | --------------------------------------- |-----------|
 | ESP32 DEVKIT V1 | Main IC                                 |	$3.50     |
 | BME280          | Temperature, humidity, pressure sensor  |	$2.10     |
 | MCP9808         | High accuracy temperature sensor        | $0.75     |
-| CCS811          | CO2, TVOC sensor                        | $5.89     |
+| CCS811          | CO<sub>2</sub>, TVOC sensor                        | $5.89     |
 | HC-SR505        | PIR sensor (AM312)                      | $1.15     |
 | J5019           | Battery charger with DC-DC converter    | $0.69     |
 | 4.2" Epaper     | Waveshare E-paper Display Module        | $28.47    |
@@ -36,29 +40,52 @@ The project is a part of bigger IOT system. Weather Station receiver measures ba
 | PCB             | Custom PCB                              |           |
 | Housing         | Custom housing (3D printed)             |           |
 
-### Libraries used
+
+### 4. Libraries used
 
 - Arduino JSON
 - BME280
 
-### Getting Started
 
-### Description
+### 5. Getting Started
 
-### Changelog
+
+### 6. Description
+
+The main functionality of Weather Station is to measure inside conditions and display parameters on Epaper display.
+
+#### Measurements
+- <b>Temperature:</b> measured by MCP9808 to ensure high accuracy (0,25&ordm;C)
+- <b>Humidity, Pressure:</b> measured by BME280
+- <b>CO<sub>2</sub>, TVOC:</b> measured by CCS811
+- <b>Presence:</b> measured by HC-SR505 PIR sensor, used to detect presence and to switch ON backlight
+- <b>Other:</b> battery voltage can be measured using analog input (<b>NOT IMPLEMENTED</b>)
+
+#### Display
+
+Not all measured parameters are displayed on Epaper. I use only few most important indicators.
+
+#### Input parameters
+
+#### Output parameters
+
+### 7. Changelog
 
 2020-08-11 <b>V0.1</b> First Beta Release - not optimized
 
-### Task list
+
+### 8. Task list
 
 - Software:
 - [ ] Firmware code optimization
 - [ ] Service commands (e.g. for temperature calibration)
 - [ ] RTC support to keep date/time
+- [ ] Battery voltage measurements
 
 - Hardware:
 - [ ] Change NeoPixel data MOSFET to AND gate
 
-## Pictures
+
+## 9. Pictures
 
 ![](Pictures/IMG1.jpg)
