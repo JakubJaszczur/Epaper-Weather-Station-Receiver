@@ -23,16 +23,18 @@ The project is a part of bigger IOT system. Weather Station receiver measures ba
 
 | Device  		    | Description 	                          | Price		  | 
 | --------------- | --------------------------------------- |-----------|
-| ESP32 DEVKIT V1 | Main IC                                 |			      |
-| BME280          | Temperature, humidity, pressure sensor  |			      |
-| MCP9808         | Precise temperature sensor              |           |
-| CCS811          | CO2, TVOC sensor                        |           |
-| HC-SR505        | PIR sensor                              |           |
-| J5019           | Battery charger with DC-DC converter    |           |
-| 4.2" Epaper     | Waveshare E-paper Display Module        |           |
-| 25mm fan        | 5V fan (25x25x7mm)                      |           |
-| SK6812          | RGBW NeoPixel LED                       |           |
-| 1000mAh Li-Ion  | Battery                                 |           |
+| ESP32 DEVKIT V1 | Main IC                                 |	$3.50     |
+| BME280          | Temperature, humidity, pressure sensor  |	$2.10     |
+| MCP9808         | High accuracy temperature sensor        | $0.75     |
+| CCS811          | CO2, TVOC sensor                        | $5.89     |
+| HC-SR505        | PIR sensor (AM312)                      | $1.15     |
+| J5019           | Battery charger with DC-DC converter    | $0.69     |
+| 4.2" Epaper     | Waveshare E-paper Display Module        | $28.47    |
+| 25mm fan        | 5V fan (25x25x7mm)                      | $1.22     |
+| SK6812          | RGBW NeoPixel LED                       | $0.25     |
+| 1000mAh Li-Ion  | Battery                                 | $2.50     |
+| PCB             | Custom PCB                              |           |
+| Housing         | Custom housing (3D printed)             |           |
 
 ### Libraries used
 
