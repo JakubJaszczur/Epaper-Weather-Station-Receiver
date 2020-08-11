@@ -2,11 +2,9 @@
 
 ## Introduction
 
-## Getting Started
-
 ## Features
 
-
+## Getting Started
 
 test
 
