@@ -1,6 +1,6 @@
 ## Testowe
 
-**Table of Contents**
+[TOCM]
 
 ### Introduction
 
