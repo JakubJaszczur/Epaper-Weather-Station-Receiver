@@ -47,7 +47,7 @@ The project is a part of bigger IOT system. Weather Station receiver measures ba
 
 ### Changelog
 
-2020-08-11 V0.1 First Beta Release - not optimized
+2020-08-11 <b>V0.1</b> First Beta Release - not optimized
 
 ### Task list
 
