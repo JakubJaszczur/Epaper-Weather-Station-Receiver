@@ -47,8 +47,11 @@ The project is a part of bigger IOT system. Weather Station receiver measures ba
 
 ### Improvement list
 
+- Software:
 - [ ] Optimized firmware code
 - [ ] Service commands (e.g. for temperature calibration)
+- [ ] RTC support to keep date/time
+- Hardware:
 - [ ] Change NeoPixel data MOSFET to AND gate
 
 test
