@@ -14,7 +14,7 @@ The project was...
 
 | Device  		| Description 	| Price		| 
 | ------------- | ------------- |-----------|
-| Content Cell  | Content Cell  |			|
+| ESP32  | Content Cell  |			|
 | Content Cell  | Content Cell  |			|
 
 ### Libraries used
@@ -28,7 +28,11 @@ The project was...
 
 ### Changelog
 
-### Task list
+### Improvement list
+
+- [ ] Optimized firmware code
+- [ ] ggggg
+- [ ] fffff
 
 test
 
