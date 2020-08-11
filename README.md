@@ -1,23 +1,23 @@
-## Testowe
+## Epaper Weather Station Receiver
 
 ### Introduction
 
-The project is a part of bigger IOT system. Weather Station receiver measures basic parameters, such as temperature, pressure, humidity, but also CO2, TVOC level. Other parameter, like outside temperature, weather forecast can be received by MQTT and displayed on 4.2" Epaper display.
+The project is a part of bigger IOT system. Weather Station receiver measures basic parameters, such as temperature, pressure, humidity, but also CO2, TVOC level. Other parameters, like outside temperature, weather forecast can be received by MQTT and displayed on 4.2" Epaper display.
 
 ### Features
 
-- 4.2" E-paper display with additional NeoPixel backlight;
-- Li-Ion battery as backup PS;
-- Additional fan for better air flow;
-- Temperature, humidity, pressure measurements;
-- CO2, TVOC level measurementsr;
-- PIR sensor;
-- Time, date, sunrise/sunset time display;
-- Current weather forecast with description;
-- Weather forecast for next 5 days;
-- Outside temperature, sensed temperature display;
-- All displayed parameters/icons can be easily changed;
-- All not measured parameters are send to/from weather station by MQTT;
+- 4.2" E-paper display with additional NeoPixel backlight
+- Li-Ion battery as backup PS
+- Additional fan for better air flow
+- Temperature, humidity, pressure measurements
+- CO2, TVOC level measurementsr
+- PIR sensor
+- Time, date, sunrise/sunset time display
+- Current weather forecast with description
+- Weather forecast for next 5 days
+- Outside temperature, sensed temperature display
+- All displayed parameters/icons can be easily changed
+- All not measured parameters are send to/from weather station by MQTT
 
 ### Bill of Materials
 
@@ -48,14 +48,13 @@ The project is a part of bigger IOT system. Weather Station receiver measures ba
 ### Improvement list
 
 - Software:
-- [ ] Optimized firmware code
+- [ ] Firmware code optimization
 - [ ] Service commands (e.g. for temperature calibration)
 - [ ] RTC support to keep date/time
+
 - Hardware:
 - [ ] Change NeoPixel data MOSFET to AND gate
 
-test
+## Pictures
 
-![Alt text](Testowe/Pictures/IMG1.jpg?raw=true "Title")
-
-![Screenshot](Pictures/IMG1.jpg)
+![](Pictures/IMG1.jpg)
