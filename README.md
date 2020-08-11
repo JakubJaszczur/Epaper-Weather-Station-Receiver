@@ -1,7 +1,5 @@
 ## Testowe
 
-[TOCM]
-
 ### Introduction
 
 The project was...
