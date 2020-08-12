@@ -45,7 +45,7 @@ Main components:
 
 ### 4. Libraries used
 
-- [Heading link](https://github.com/ZinggJM/GxEPD "GxEPD")
+- [GxEPD](https://github.com/ZinggJM/GxEPD "GxEPD")
 - Adafruit_GFX
 - PubSubClient
 - ArduinoJson
