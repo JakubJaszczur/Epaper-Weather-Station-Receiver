@@ -126,7 +126,7 @@ The main functionality of Weather Station is to measure inside conditions and di
 - <b>Humidity, Pressure:</b> measured by BME280
 - <b>CO<sub>2</sub>, TVOC:</b> measured by CCS811
 - <b>Presence:</b> measured by HC-SR505 PIR sensor, used to detect presence and to switch ON backlight
-- <b>Other:</b> battery voltage can be measured using analog input (<b>NOT IMPLEMENTED</b>)
+- <b>Other:</b> battery voltage can be measured using analog input
 
 #### Display
 
@@ -192,7 +192,7 @@ Parameters send by device in PUBLISH_TOPIC are in JSON format:
 "pressIn":1022.372,
 "co2":1065,
 "tvoc":101,
-"bat":4.274172
+"bat":4.174172
 }
 ```
 
