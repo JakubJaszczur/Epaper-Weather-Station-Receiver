@@ -82,7 +82,7 @@ const char* mqtt_server = "MQTT_SERVER_IP";
 //const char* mqtt_password = "MQTT_PASSWORD";
 ```
 
-You can adjust, how often display will be refreshed, and how often presence will be checked using PIR sensor
+You can adjust, how often display will be refreshed, and how often presence will be checked using PIR sensor (it also defines minimum backlight time)
 ```
 // Refresh time in seconds
 #define REFRESH_TIME	30
