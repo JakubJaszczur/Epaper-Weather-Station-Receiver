@@ -16,7 +16,7 @@ The project is a part of bigger IOT system. Weather Station receiver measures ba
 - Time, date, sunrise/sunset time display
 - Current weather forecast with description
 - Weather forecast for next 5 days
-- Outside temperature, sensed temperature display
+- Outside temperature, felt temperature display
 - All displayed parameters/icons can be easily changed
 - All not measured parameters are send to/from weather station by MQTT
 
@@ -65,6 +65,25 @@ The main functionality of Weather Station is to measure inside conditions and di
 
 Not all measured parameters are displayed on Epaper. I use only few most important indicators.
 
+![](Pictures/Interface.jpg)
+
+<b>A</b> Temperature inside (measured)<br>
+<b>B</b> Temperature outside (MQTT)<br>
+<b>C</b> Felt temperature (MQTT)<br>
+<b>D</b> Pressure inside (measured)<br>
+<b>E</b> Humidity inside (measured)<br>
+<b>F</b> Empty space, to be used<br>
+<b>G</b> Actual weather icon (MQTT)<br>
+<b>H</b> Time (MQTT)<br>
+<b>I</b> Date (MQTT)<br>
+<b>J</b> Weather description (MQTT)<br>
+<b>K</b> Sunrise time (MQTT)<br>
+<b>L</b> Day of week (MQTT)<br>
+<b>M</b> Sunset (MQTT)<br>
+<b>N</b> Forecast date (MQTT)<br>
+<b>O</b> Forecast icon (MQTT)<br>
+<b>P</b> Forecast temperature (MQTT)
+
 #### Input parameters
 
 #### Output parameters
@@ -88,4 +107,4 @@ Not all measured parameters are displayed on Epaper. I use only few most importa
 
 ## 9. Pictures
 
-![](Pictures/IMG1.jpg)
+
