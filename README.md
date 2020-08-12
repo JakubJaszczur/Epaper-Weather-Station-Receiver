@@ -153,6 +153,32 @@ Not all measured parameters are displayed on Epaper. I use only few most importa
 
 #### Input parameters
 
+All MQTT subscribed topics should provide data in format:
+
+
+| Topic  		  	| Type			                        | Example	  		| Note				|
+| --------------- 	| --------------------------------------|-------------		|-------------		|
+| TEMPOUT_TOPIC		| String								| 30.75				|					|
+| TIME_TOPIC		| String								| 10:02				|					|
+| DATE_TOPIC		| String								| 12-08-2020		|					|
+| SUNRISE_TOPIC		| String								| 04:29				|					|
+| SUNSET_TOPIC		| String								| 19:06				|					|
+| DESCRIPTION_TOPIC	| String								| Sunny				|					|
+| WEEKDAY_TOPIC		| String								| Monday			|					|
+| WEATHER_ICON_TOPIC| String								| 1					| See picture below	|
+| FELT_TEMP_TOPIC	| String								| 31.56				|					|
+| FORECASTx_TOPIC	| JSON									| See example below |					|
+
+Weather Icons codes
+
+Forecast JSON example
+```json
+{
+"time1":"12-08",
+"icon1":"1",
+"temp1":22.23
+}
+```
 
 
 #### Output parameters
