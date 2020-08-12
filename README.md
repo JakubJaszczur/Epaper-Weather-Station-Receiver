@@ -208,7 +208,7 @@ Parameters send by device in PUBLISH_TOPIC are in JSON format:
 - [ ] Firmware code optimization
 - [ ] Service commands (e.g. for temperature calibration)
 - [ ] RTC support to keep date/time
-- [ X ] Battery voltage measurements
+- [X] Battery voltage measurements
 - [ ] WiFi manager with input settings
 
 - Hardware:
