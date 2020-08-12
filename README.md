@@ -45,8 +45,15 @@ Main components:
 
 ### 4. Libraries used
 
-- Arduino JSON
-- BME280
+- [Heading link](https://github.com/ZinggJM/GxEPD "GxEPD")
+- Adafruit_GFX
+- PubSubClient
+- ArduinoJson
+- Adafruit_MCP9808
+- Adafruit_BME280
+- Adafruit_Sensor
+- Adafruit_CCS811
+- Adafruit_NeoPixel
 
 
 ### 5. Getting Started
