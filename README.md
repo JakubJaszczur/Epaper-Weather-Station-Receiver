@@ -43,17 +43,17 @@ Main components:
 | Housing         | Custom housing (3D printed)             |           |
 
 
-### 4. Libraries used
+### 4. Libraries
 
 - [GxEPD](https://github.com/ZinggJM/GxEPD "GxEPD")
-- Adafruit_GFX
-- PubSubClient
-- ArduinoJson
-- Adafruit_MCP9808
-- Adafruit_BME280
-- Adafruit_Sensor
-- Adafruit_CCS811
-- Adafruit_NeoPixel
+- [Adafruit GFX](https://github.com/adafruit/Adafruit-GFX-Library "Adafruit_GFX")
+- [PubSubClient](https://github.com/knolleary/pubsubclient "PubSubClient")
+- [ArduinoJson](https://github.com/bblanchon/ArduinoJson "ArduinoJsonD")
+- [Adafruit MCP9808](https://github.com/adafruit/Adafruit_MCP9808_Library "Adafruit_MCP9808")
+- [Adafruit BME280](https://github.com/adafruit/Adafruit_BME280_Library "Adafruit_BME280")
+- [Adafruit Sensor](https://github.com/adafruit/Adafruit_Sensor "Adafruit_Sensor")
+- [Adafruit CCS811](https://github.com/adafruit/Adafruit_CCS811 "Adafruit_CCS811")
+- [Adafruit NeoPixel](https://github.com/adafruit/Adafruit_NeoPixel "Adafruit_NeoPixel")
 
 
 ### 5. Getting Started
