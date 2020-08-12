@@ -10,6 +10,7 @@ The project is a part of bigger IOT system. Weather Station receiver measures ba
 ### 2. Features
 
 - 4.2" E-paper display with additional NeoPixel backlight
+- Backlight colour depends on CO<sub>2</sub> on room
 - Li-Ion battery as backup PS
 - Additional fan for better air flow
 - Temperature, humidity, pressure measurements
