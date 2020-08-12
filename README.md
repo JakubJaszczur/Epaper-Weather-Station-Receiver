@@ -13,7 +13,7 @@ The project is a part of bigger IOT system. Weather Station receiver measures ba
 - Li-Ion battery as backup PS
 - Additional fan for better air flow
 - Temperature, humidity, pressure measurements
-- CO<sub>2</sub>, TVOC level measurementsr
+- CO<sub>2</sub>, TVOC level measurements
 - PIR sensor
 - Time, date, sunrise/sunset time display
 - Current weather forecast with description
@@ -58,6 +58,13 @@ Main components:
 
 ### 5. Getting Started
 
+To run Weather Station, user should change some settings in data.h file:
+
+```
+// WiFi Settings
+const char* ssid = "YOUR_SSID";
+const char* password = "YOUR_PASSWORD";
+```
 
 ### 6. Description
 
@@ -109,6 +116,7 @@ Not all measured parameters are displayed on Epaper. I use only few most importa
 - [ ] Service commands (e.g. for temperature calibration)
 - [ ] RTC support to keep date/time
 - [ ] Battery voltage measurements
+- [ ] WiFi manager with input settings
 
 - Hardware:
 - [ ] Change NeoPixel data MOSFET to AND gate
