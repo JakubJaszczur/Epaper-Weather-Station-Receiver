@@ -95,6 +95,28 @@ Define altitude of your home (for pressure measurements)
 #define ALTITUDE        515.0 //define altitude of location
 ```
 
+Define MQTT Publish and Subscribe topics compatible with your server
+```
+// MQTT Input topics
+#define TEMPOUT_TOPIC       "home/weatherstation/tempout"
+#define TIME_TOPIC          "basic/time/time"
+#define DATE_TOPIC          "basic/time/date"
+#define SUNRISE_TOPIC       "conditions/weather/sunrise"
+#define SUNSET_TOPIC        "conditions/weather/sunset"
+#define DESCRIPTION_TOPIC   "conditions/weather/description"
+#define WEEKDAY_TOPIC       "basic/time/day"
+#define WEATHER_ICON_TOPIC  "conditions/weather/icon"
+#define FELT_TEMP_TOPIC     "conditions/weather/tempfeel"
+#define FORECAST1_TOPIC     "forecast1"
+#define FORECAST2_TOPIC     "forecast2"
+#define FORECAST3_TOPIC     "forecast3"
+#define FORECAST4_TOPIC     "forecast4"
+#define FORECAST5_TOPIC     "forecast5"
+
+// MQTT Output topics
+#define PUBLISH_TOPIC       "home/station"
+```
+
 ### 6. Description
 
 The main functionality of Weather Station is to measure inside conditions and display parameters on Epaper display.
