@@ -60,10 +60,39 @@ Main components:
 
 To run Weather Station, user should change some settings in data.h file:
 
+Basic WiFi settings
 ```
 // WiFi Settings
 const char* ssid = "YOUR_SSID";
 const char* password = "YOUR_PASSWORD";
+```
+
+Choose, how many NeoPixel LEDs you want to use. You can solder up to 10 LEDs. If you use less than 10, you should make shorts everywhere, where you do not use LEDs (Designators R2 to R7)
+```
+// NeoPixel settings
+ ...
+#define LED_COUNT   6       // No of LEDs
+```
+
+Uncomment, if you use MQTT user and password
+```
+// MQTT Settings
+const char* mqtt_server = "MQTT_SERVER_IP";
+//const char* mqtt_user = "MQTT_USER";
+//const char* mqtt_password = "MQTT_PASSWORD";
+```
+
+You can adjust, how often display will be refreshed, and how often presence will be checked using PIR sensor
+```
+// Refresh time in seconds
+#define REFRESH_TIME	30
+#define PRESENCE_TIME   5
+```
+
+Define altitude of your home (for pressure measurements)
+```
+// Sensors config data
+#define ALTITUDE        515.0 //define altitude of location
 ```
 
 ### 6. Description
@@ -101,6 +130,8 @@ Not all measured parameters are displayed on Epaper. I use only few most importa
 <b>P</b> Forecast temperature (MQTT)
 
 #### Input parameters
+
+
 
 #### Output parameters
 
