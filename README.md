@@ -1,5 +1,7 @@
 ## Epaper Weather Station Receiver
 
+![](Pictures/IMG1.jpg)
+
 ### 1. Introduction
 
 The project is a part of bigger IOT system. Weather Station receiver measures basic parameters, such as temperature, pressure, humidity, but also CO2, TVOC level. Other parameters, like outside temperature, weather forecast can be received by MQTT and displayed on 4.2" Epaper display.
@@ -107,4 +109,6 @@ Not all measured parameters are displayed on Epaper. I use only few most importa
 
 ## 9. Pictures
 
+![](Pictures/IMG2.jpg)
 
+![](Pictures/IMG3.jpg)
