@@ -183,6 +183,20 @@ Forecast JSON example
 
 #### Output parameters
 
+Parameters send by device in PUBLISH_TOPIC are in JSON format:
+
+```json
+{
+"tempIn":24.7,
+"humIn":44.9248,
+"pressIn":1022.372,
+"co2":1065,
+"tvoc":101,
+"bat":4.274172
+}
+```
+
+
 ### 7. Changelog
 
 2020-08-11 <b>V0.1</b> First Beta Release - not optimized
@@ -194,7 +208,7 @@ Forecast JSON example
 - [ ] Firmware code optimization
 - [ ] Service commands (e.g. for temperature calibration)
 - [ ] RTC support to keep date/time
-- [ ] Battery voltage measurements
+- [ X ] Battery voltage measurements
 - [ ] WiFi manager with input settings
 
 - Hardware:
