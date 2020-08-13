@@ -171,6 +171,7 @@ All MQTT subscribed topics should provide data in format:
 | FORECASTx_TOPIC	| JSON									| See example below |					|
 
 Weather Icons codes
+![](Pictures/Icons.png)
 
 Forecast JSON example
 ```json
