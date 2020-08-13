@@ -223,3 +223,7 @@ Parameters send by device in PUBLISH_TOPIC are in JSON format:
 ![](Pictures/IMG2.jpg)
 
 ![](Pictures/IMG3.jpg)
+
+![](Pictures/IMG4.jpg)
+
+![](Pictures/IMG5.jpg)
