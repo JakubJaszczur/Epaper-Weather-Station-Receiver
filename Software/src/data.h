@@ -1,6 +1,6 @@
 // WiFi Settings
-const char* ssid = "TP-LINK_7B10";
-const char* password = "dzesi1234";
+const char* ssid = "";
+const char* password = "";
 
 // Battery measurement settings
 
@@ -18,9 +18,9 @@ const char* password = "dzesi1234";
 #define MAX_CO2     5000    // Max poziom
 
 // MQTT Settings
-const char* mqtt_server = "192.168.0.113";
-//const char* mqtt_user = "admin"";
-//const char* mqtt_password = "sunrise2010;
+const char* mqtt_server = "";
+//const char* mqtt_user = "";
+//const char* mqtt_password = "";
 
 #define MQTT_MAX_PACKET_SIZE 256
 
