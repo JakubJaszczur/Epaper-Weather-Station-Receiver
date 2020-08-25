@@ -202,7 +202,8 @@ Parameters send by device in PUBLISH_TOPIC are in JSON format:
 
 ### 7. Changelog
 
-2020-08-11 <b>V0.1</b> First Beta Release - not optimized
+2020-08-25 <b>V0.1.5</b> Stable beta - not optimized, without STL files (Public)
+2020-08-11 <b>V0.1</b> First Beta Release - not optimized, without firmware code (private)
 
 
 ### 8. Task list
