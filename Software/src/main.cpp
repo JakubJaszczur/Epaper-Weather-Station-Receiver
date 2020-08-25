@@ -1,8 +1,9 @@
 // ************************************* //
 // ** Epaper Weather Station Receiver ** //
-// *********** Version 0.1 ************* //
-// ********** No optimized ************* //
+// ***** Version 0.2 ** 2020-08-25 ***** //
 // ************************************* //
+
+// 2020-08-25 Optimalisation
 
 #include <Arduino.h>
 #include <GxEPD.h>
@@ -37,32 +38,14 @@ GxEPD_Class display(io, /*RST=*/ 16, /*BUSY=*/ 4); // arbitrary selection of (16
 WiFiClient espClient;
 PubSubClient client(espClient);
 
-unsigned long timeNow = 0;
-unsigned long timeLast = 0;
-unsigned long timeLastPresence = 0;
-
 // Globals
 
-// JSON object to keep incoming data
+// JSON object to keep data
 const size_t capacity = JSON_OBJECT_SIZE(3) + 40;
 DynamicJsonDocument doc(capacity);
 
-boolean presence = LOW;
-
-int Rcolor = 0;
-int Gcolor = 0;
-int Wcolor = 0;
-
-float tempIn;
 float tempOut;
 float tempFeel;
-float humIn;
-float pressIn;
-
-int co2;
-int tvoc;
-
-float battery;
 
 String timeToDisplay;
 String dateToDisplay;
@@ -71,11 +54,7 @@ String sunsetTime;
 String weatherDescription;
 String weekDay;
 
-String forecastString1;
-String forecastString2;
-String forecastString3;
-String forecastString4;
-String forecastString5;
+String forecastString;
 
 int weatherIcon = 0;
 int forecast1Icon = 0;
@@ -96,6 +75,10 @@ float forecastTemp3;
 float forecastTemp4;
 float forecastTemp5;
 
+bool MPC9808status = false;
+bool BME280status = false;
+bool CCS811status = false;
+
 // Battery measurement function
 
 float measureBattery()
@@ -108,55 +91,62 @@ float measureBattery()
 
 // NeoPixel function
 
-void colorWipe(uint32_t color) 
+void colorWipe(uint32_t color)
 {
-  for(int i = 0; i < strip.numPixels(); i ++) 
+  for(int i = 0; i < strip.numPixels(); i ++)
   {
     strip.setPixelColor(i, color);         //  Set pixel's color (in RAM)
     strip.show();                          //  Update strip to match
   }
 }
 
-void mapColors(int testVariable)
+void mapColours(int testVariable, int medLevel, int maxLevel, int colours[])
 {
-  if(testVariable <= MED_CO2)
+  if(testVariable <= medLevel)
     {
-      Rcolor = map(testVariable, 0, MED_CO2, 0, 255);
-      Gcolor = map(testVariable, 0, MED_CO2, 0, 255);
-      Wcolor = map(testVariable, 0, MED_CO2, 255, 0);
+      /*Rcolor = map(testVariable, 0, medLevel, 0, 255);
+      Gcolor = map(testVariable, 0, medLevel, 0, 255);
+      Wcolor = map(testVariable, 0, medLevel, 255, 0);*/
+      colours[0] = map(testVariable, 0, medLevel, 0, 255);
+      colours[1] = map(testVariable, 0, medLevel, 0, 255);
+      colours[3] = map(testVariable, 0, medLevel, 255, 0);
     }
 
   else
     {
-      Rcolor = 255;
-      Gcolor = map(testVariable, MED_CO2 + 1, MAX_CO2, 255, 0);
-      Wcolor = 0;
+      /*Rcolor = 255;
+      Gcolor = map(testVariable, medLevel + 1, medLevel, 255, 0);
+      Wcolor = 0;*/
+      colours[0] = 255;
+      colours[1] = map(testVariable, medLevel + 1, maxLevel, 255, 0);
+      colours[3] = 0;
     }
 }
 
 // Checking presence
 
-void CheckPresence(int pinNo)
+bool CheckPresence(int pinNo, bool lastStatus, bool mqttConnected)
 {
   boolean status = digitalRead(pinNo);
 
-  if(status != presence)
-  { 
+  if((status != lastStatus) && (mqttConnected))
+  {
     char msg[5];
     String tempString = String(status);
 
     tempString.toCharArray(msg, sizeof(msg));
     client.publish("home/presence", msg);
     Serial.println("Message sent!");
-    presence = status;
   }
+
+  return status;
 }
 
 // MCP9808 functions
 
 boolean InitialiseMPC9808(byte mode)
 {
-  if(!tempsensor.begin(MCP9808_ADDR)) 
+  if(!tempsensor.begin(MCP9808_ADDR))
   {
     Serial.println("MCP9808 Error");
     return false;
@@ -188,7 +178,7 @@ float GetTemperatureMCP9808()
 boolean InitialiseBME280()
 {
   if (!bme.begin(BME280_ADDR, &Wire))
-  //if (!bme.begin())  
+  //if (!bme.begin())
   {
     Serial.println("BME280 Error");
     return false;
@@ -198,20 +188,20 @@ boolean InitialiseBME280()
     Serial.println("BME280 Initialised");
     return true;
   }
-  
+
 }
 
 float GetTemperatureBME280()
 {
   float temperature = bme.readTemperature();
-  
+
   return temperature;
 }
 
 float GetHumidityBME280()
 {
   float humidity = bme.readHumidity();
-  
+
   return humidity;
 }
 
@@ -220,7 +210,7 @@ float GetPressureBME280()
   float pressure = bme.readPressure();
   pressure = bme.seaLevelForAltitude(ALTITUDE, pressure);
   pressure = pressure / 100.0F;
-  
+
   return pressure;
 }
 
@@ -228,7 +218,7 @@ float GetPressureBME280()
 
 boolean InitialiseCCS811()
 {
-  if (!ccs.begin()) 
+  if (!ccs.begin())
   {
     Serial.println("CCS811 Error");
     return false;
@@ -239,12 +229,12 @@ boolean InitialiseCCS811()
     while(!ccs.available());
     return true;
   }
-  
+
 }
 
 int GetCO2()
 {
-  int co2;
+  int co2 = 0;
 
   if(ccs.available())
   {
@@ -254,8 +244,7 @@ int GetCO2()
     }
     else
     {
-      co2 = 0;
-      Serial.println("Error!");
+      Serial.println("CO2 read error!");
     }
   }
 
@@ -667,7 +656,7 @@ void displayForecastTemperature(float value, int field)
 
   display.fillRect(box_x, box_y, box_w, box_h, GxEPD_WHITE);
   cursor_y = box_y + box_h - 5;
-  
+
   if(value >= 0 && value < 10)
     cursor_x = box_x + 10;
   else if((value >= 10) || (value < 0 && value > -10))
@@ -786,7 +775,7 @@ void displayTime(String tempTime)
   uint16_t box_w = TIME_W;
   uint16_t box_h = TIME_H;
   uint16_t cursor_y = box_y + box_h - 6;;
-  
+
   display.fillRect(box_x, box_y, box_w, box_h, GxEPD_WHITE);
   display.setCursor(box_x + 2, cursor_y);
   display.print(tempTime);
@@ -812,7 +801,7 @@ void displayDate(String tempDate)
 
 // WiFi setup
 
-void setup_wifi() 
+void setupWifi()
 {
   delay(10);
   // We start by connecting to a WiFi network
@@ -820,9 +809,11 @@ void setup_wifi()
   Serial.print("Connecting to ");
   Serial.println(ssid);
 
-  WiFi.begin(ssid, password);
+  tcpip_adapter_set_hostname(TCPIP_ADAPTER_IF_STA, DEVICE_NAME);
 
-  while (WiFi.status() != WL_CONNECTED) 
+  WiFi.begin(ssid, password);
+  
+  while (WiFi.status() != WL_CONNECTED)
   {
     delay(500);
     Serial.print(".");
@@ -836,16 +827,36 @@ void setup_wifi()
   Serial.println(WiFi.localIP());
 }
 
+bool wifiConnectionStatus(int counter)
+{
+  bool status = false;
+
+  for(int i = 0; i < counter; i++)  //try to reconnect x times
+  {
+    if(WiFi.isConnected())
+    {
+      status = true;
+    }
+    else
+    {
+      delay(500);
+      WiFi.reconnect();
+      status = WiFi.isConnected();
+    }
+  }
+
+  return status;
+}
 // MQTT setup
 
-void callback(char* topic, byte* payload, unsigned int length) 
+void callback(char* topic, byte* payload, unsigned int length)
 {
   char messageBuffer [250];
 
   Serial.print("Message arrived [");
   Serial.print(topic);
   Serial.print("] ");
-  for (uint i = 0; i < length; i++) 
+  for (uint i = 0; i < length; i++)
   {
     Serial.print((char)payload[i]);
     messageBuffer[i] = payload[i];
@@ -854,105 +865,105 @@ void callback(char* topic, byte* payload, unsigned int length)
 
   char *tempPayload = messageBuffer;
 
-  if(String(topic) == "home/weatherstation/tempout")
+  if(String(topic) == TEMPOUT_TOPIC)
   {
     tempOut = atof(tempPayload);
     Serial.println(tempOut);
   }
-  if(String(topic) == "basic/time/time")
+  if(String(topic) == TIME_TOPIC)
   {
     timeToDisplay = String(messageBuffer);
     Serial.println(timeToDisplay);
   }
-  if(String(topic) == "basic/time/date")
+  if(String(topic) == DATE_TOPIC)
   {
     dateToDisplay = String(messageBuffer);
     Serial.println(dateToDisplay);
   }
-  if(String(topic) == "conditions/weather/sunrise")
+  if(String(topic) == SUNRISE_TOPIC)
   {
     sunriseTime = String(messageBuffer);
     Serial.println(sunriseTime);
   }
-  if(String(topic) == "conditions/weather/sunset")
+  if(String(topic) == SUNSET_TOPIC)
   {
     sunsetTime = String(messageBuffer);
     Serial.println(sunsetTime);
   }
-  if(String(topic) == "conditions/weather/description")
+  if(String(topic) == DESCRIPTION_TOPIC)
   {
     weatherDescription = String(messageBuffer);
     Serial.println(weatherDescription);
   }
-  if(String(topic) == "basic/time/day")
+  if(String(topic) == WEEKDAY_TOPIC)
   {
     weekDay = String(messageBuffer);
     Serial.println(weekDay);
   }
-  if(String(topic) == "conditions/weather/icon")
+  if(String(topic) == WEATHER_ICON_TOPIC)
   {
     weatherIcon = atoi(tempPayload);
     Serial.println(weatherIcon);
   }
-  if(String(topic) == "conditions/weather/tempfeel")
+  if(String(topic) == FELT_TEMP_TOPIC)
   {
     tempFeel = atof(tempPayload);
     Serial.println(tempFeel);
   }
-  if(String(topic) == "forecast1")
+  if(String(topic) == FORECAST1_TOPIC)
   {
-    forecastString1 = String(messageBuffer);
-    Serial.println(forecastString1);
-    deserializeJson(doc, forecastString1);
-    
+    forecastString = String(messageBuffer);
+    Serial.println(forecastString);
+    deserializeJson(doc, forecastString);
+
     const char* time1 = doc["time1"];
     date1 = String(time1);
     const char* icon1 = doc["icon1"];
     forecast1Icon = atoi(icon1);
     forecastTemp1 = doc["temp1"];
   }
-  if(String(topic) == "forecast2")
+  if(String(topic) == FORECAST2_TOPIC)
   {
-    forecastString2 = String(messageBuffer);
-    Serial.println(forecastString2);
-    deserializeJson(doc, forecastString2);
-    
+    forecastString = String(messageBuffer);
+    Serial.println(forecastString);
+    deserializeJson(doc, forecastString);
+
     const char* time2 = doc["time2"];
     date2 = String(time2);
     const char* icon2 = doc["icon2"];
     forecast2Icon = atoi(icon2);
     forecastTemp2 = doc["temp2"];
   }
-  if(String(topic) == "forecast3")
+  if(String(topic) == FORECAST3_TOPIC)
   {
-    forecastString3 = String(messageBuffer);
-    Serial.println(forecastString3);
-    deserializeJson(doc, forecastString3);
-    
+    forecastString = String(messageBuffer);
+    Serial.println(forecastString);
+    deserializeJson(doc, forecastString);
+
     const char* time3 = doc["time3"];
     date3 = String(time3);
     const char* icon3 = doc["icon3"];
     forecast3Icon = atoi(icon3);
     forecastTemp3 = doc["temp3"];
   }
-  if(String(topic) == "forecast4")
+  if(String(topic) == FORECAST4_TOPIC)
   {
-    forecastString4 = String(messageBuffer);
-    Serial.println(forecastString4);
-    deserializeJson(doc, forecastString4);
-    
+    forecastString = String(messageBuffer);
+    Serial.println(forecastString);
+    deserializeJson(doc, forecastString);
+
     const char* time4 = doc["time4"];
     date4 = String(time4);
     const char* icon4 = doc["icon4"];
     forecast4Icon = atoi(icon4);
     forecastTemp4 = doc["temp4"];
   }
-  if(String(topic) == "forecast5")
+  if(String(topic) == FORECAST5_TOPIC)
   {
-    forecastString5 = String(messageBuffer);
-    Serial.println(forecastString5);
-    deserializeJson(doc, forecastString5);
-    
+    forecastString = String(messageBuffer);
+    Serial.println(forecastString);
+    deserializeJson(doc, forecastString);
+
     const char* time5 = doc["time5"];
     date5 = String(time5);
     const char* icon5 = doc["icon5"];
@@ -961,66 +972,80 @@ void callback(char* topic, byte* payload, unsigned int length)
   }
 }
 
-void reconnect() 
+bool MQTTconnectionStatus(bool wifiStatus, int counter)
 {
-  // Loop until we're reconnected
-  while (!client.connected()) 
-  {
-    Serial.print("Attempting MQTT connection...");
-    // Create a random client ID
-    String clientId = "WeatherStationESP32";
-    
-    // Attempt to connect
-    if (client.connect(clientId.c_str())) 
-    {
-      Serial.println("connected");
-      client.subscribe("basic/time/time");
-      client.subscribe("basic/time/date");
-      client.subscribe("basic/time/day");
-      client.subscribe("conditions/weather/description");
-      client.subscribe("conditions/weather/sunrise");
-      client.subscribe("conditions/weather/sunset");
-      client.subscribe("conditions/weather/icon");
-      client.subscribe("conditions/weather/tempfeel");
-      client.subscribe("home/weatherstation/tempout");
-      client.subscribe("forecast1");
-      client.subscribe("forecast2");
-      client.subscribe("forecast3");
-      client.subscribe("forecast4");
-      client.subscribe("forecast5");
-    } 
+  bool status = false;
 
-    else 
+  if(wifiStatus)
+  {
+    for(int i = 0; i < counter; i++)  //try to reconnect x times
     {
-      Serial.print("failed, rc=");
-      Serial.print(client.state());
-      Serial.println("try again in 5 seconds");
-      // Wait 5 seconds before retrying
-      delay(5000);
+      if(client.connected())
+      {
+        status = true;
+      }
+      else
+      {
+        Serial.print("Attempting MQTT connection...");
+        String clientId = "WeatherStationESP32";
+
+        // Attempt to connect
+        if (client.connect(clientId.c_str()))
+        {
+          Serial.println("MQTT connected");
+          client.subscribe(TIME_TOPIC);
+          client.subscribe(DATE_TOPIC);
+          client.subscribe(WEEKDAY_TOPIC);
+          client.subscribe(DESCRIPTION_TOPIC);
+          client.subscribe(SUNRISE_TOPIC);
+          client.subscribe(SUNSET_TOPIC);
+          client.subscribe(WEATHER_ICON_TOPIC);
+          client.subscribe(FELT_TEMP_TOPIC);
+          client.subscribe(TEMPOUT_TOPIC);
+          client.subscribe(FORECAST1_TOPIC);
+          client.subscribe(FORECAST2_TOPIC);
+          client.subscribe(FORECAST3_TOPIC);
+          client.subscribe(FORECAST4_TOPIC);
+          client.subscribe(FORECAST5_TOPIC);
+        }
+
+        else
+        {
+          Serial.print("failed, rc=");
+          Serial.print(client.state());
+          Serial.println("try again in 1 second");
+          // Wait 1 second before retrying
+          delay(1000);
+        }
+
+        status = client.connected();
+      }
     }
   }
+
+  return status; 
 }
 
-void sendDataMQTT()
+void sendDataMQTT(float temperature, float humidity, float pressure, int co2Level, int tvocLevel, float bat)
 {
   const size_t cap = JSON_OBJECT_SIZE(6);
   DynamicJsonDocument mqttJson(cap);
 
   String toSend;
 
-  mqttJson["tempIn"] = tempIn;
-  mqttJson["humIn"] = humIn;
-  mqttJson["pressIn"] = pressIn;
-  mqttJson["co2"] = co2;
-  mqttJson["tvoc"] = tvoc;
-  mqttJson["bat"] = battery;
+  mqttJson["tempIn"] = temperature;
+  mqttJson["humIn"] = humidity;
+  mqttJson["pressIn"] = pressure;
+  mqttJson["co2"] = co2Level;
+  mqttJson["tvoc"] = tvocLevel;
+  mqttJson["bat"] = bat;
 
   serializeJson(mqttJson, toSend);
 
   char msg[150];
 
   toSend.toCharArray(msg, sizeof(msg));
-  client.publish("home/station", msg);
+  client.publish(PUBLISH_TOPIC, msg);
   Serial.println("Message sent!");
 }
 
@@ -1045,8 +1070,9 @@ void setup(void)
 
   showBackground();
 
-  setup_wifi();
-  WiFi.softAPdisconnect (true); //disable hotspot mode
+  setupWifi();
+  WiFi.softAPdisconnect(true); //disable hotspot mode
+
   client.setServer(mqtt_server, 1883);
   client.setCallback(callback);
 
@@ -1054,48 +1080,68 @@ void setup(void)
 
   Serial.println();
 
-  InitialiseMPC9808(2);
-  InitialiseBME280();
-  InitialiseCCS811();
+  MPC9808status = InitialiseMPC9808(2);
+  BME280status = InitialiseBME280();
+  CCS811status = InitialiseCCS811();
 
   pinMode(PRESENCE_PIN, INPUT);
 }
 
 void loop()
 {
+  unsigned long timeNow;
+  static unsigned long timeLast;
+  static unsigned long timeLastPresence;
+
+  static float tempIn = 0;
+  static float humIn = 0;
+  static float pressIn = 0;
+
+  static int co2 = 0;
+  static int tvoc = 0;
+
+  static float battery = 0;
+
+  static bool presenceStatus = false;
+  static int rgbw[4] = {0};     // colours array for NEOPIXEL
+
   timeNow = millis();
 
-  if(WiFi.status() != WL_CONNECTED)
-  {
-    ESP.restart();
-  }
-  //Check MQTT connection
-  if(!client.connected())
-  {
-    reconnect();
-  }
-
+  bool wifiStatus = wifiConnectionStatus(5);              // Check WiFI status and try to reconnect in case of no connection
+  bool mqttStatus = MQTTconnectionStatus(wifiStatus, 5);  // Check MQTT status and try to reconnect in case of no connection
+    
   client.loop();
 
-  if((timeNow - timeLastPresence) > PRESENCE_TIME * 1000)
+  if((timeNow - timeLastPresence) > PRESENCE_TIME * 1000) // Get Presence and send is MQTT is available
   {
-    CheckPresence(PRESENCE_PIN);
+    presenceStatus = CheckPresence(PRESENCE_PIN, presenceStatus, mqttStatus);
     timeLastPresence = timeNow;
   }
 
-  if((timeNow - timeLast) > REFRESH_TIME * 1000)
+  if((timeNow - timeLast) > REFRESH_TIME * 1000)          // Get data
   {
-    tempIn = GetTemperatureMCP9808();
-    humIn = GetHumidityBME280();
-    pressIn = GetPressureBME280();
-    co2 = GetCO2();
-    tvoc = GetTVOC();
+    if(MPC9808status)
+      tempIn = GetTemperatureMCP9808();
+    if(BME280status)
+    {
+      humIn = GetHumidityBME280();
+      pressIn = GetPressureBME280();
+    }
+    if(CCS811status)
+    {
+      co2 = GetCO2();
+      tvoc = GetTVOC();
+    }
+
     battery = measureBattery();
 
     SetEnvData((int)humIn, (double)tempIn);
 
-    sendDataMQTT();
-    
+    if(mqttStatus)  // Send data only if device is connected to MQTT
+    {
+      sendDataMQTT(tempIn, humIn, pressIn, co2, tvoc, battery);
+    }
+
     display.drawExampleBitmap(background, 0, 0, 400, 300, GxEPD_BLACK);
     displayValue(tempIn, 1);
     displayValue(tempOut, 2);
@@ -1130,15 +1176,16 @@ void loop()
     displayForecastTemperature(forecastTemp5, 5);
 
     display.update();
-    
+
     timeLast = timeNow;
   }
 
-  if(digitalRead(PRESENCE_PIN))
+  if(digitalRead(PRESENCE_PIN))            // Turn on backlight
   {
     digitalWrite(LED_ON, HIGH);
-    mapColors(co2);
-    colorWipe(strip.Color(Rcolor, Gcolor, 0, Wcolor)); // RGBW
+    mapColours(co2, MED_CO2, MAX_CO2, rgbw);
+
+    colorWipe(strip.Color(rgbw[0], rgbw[1], rgbw[2], rgbw[3])); // RGBW
     //strip.setBrightness(BRIGHTNESS); // Set BRIGHTNESS to about 1/5 (max = 255)
     strip.show();                          //  Update strip to match
   }
@@ -1149,4 +1196,3 @@ void loop()
     strip.show();                          //  Update strip to match
   }
 }
-
