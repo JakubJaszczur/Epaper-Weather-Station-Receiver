@@ -10,7 +10,7 @@ The project is a part of bigger IOT system. Weather Station receiver measures ba
 ### 2. Features
 
 - 4.2" E-paper display with additional NeoPixel backlight
-- Backlight colour depends on CO<sub>2</sub> on room
+- Backlight colour depends on CO<sub>2</sub> in room
 - Li-Ion battery as backup PS
 - Additional fan for better air flow
 - Temperature, humidity, pressure measurements
@@ -202,7 +202,8 @@ Parameters send by device in PUBLISH_TOPIC are in JSON format:
 
 ### 7. Changelog
 
-2020-08-11 <b>V0.1</b> First Beta Release - not optimized
+2020-08-25 <b>V0.1.5</b> Stable beta - not optimized, without STL files (Public)<br>
+2020-08-11 <b>V0.1</b> First Beta Release - not optimized, without firmware code (private)
 
 
 ### 8. Task list
@@ -215,7 +216,7 @@ Parameters send by device in PUBLISH_TOPIC are in JSON format:
 - [ ] WiFi manager with input settings
 
 - Hardware:
-- [ ] Change NeoPixel data MOSFET to AND gate
+- [ ] Change NeoPixel data MOSFET to AND gate (SN74AHC1G08DBVR)
 
 
 ## 9. Pictures
