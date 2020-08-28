@@ -216,7 +216,7 @@ Parameters send by device in PUBLISH_TOPIC are in JSON format:
 - [ ] WiFi manager with input settings
 
 - Hardware:
-- [ ] Change NeoPixel data MOSFET to AND gate
+- [ ] Change NeoPixel data MOSFET to AND gate (SN74AHC1G08DBVR)
 
 
 ## 9. Pictures
