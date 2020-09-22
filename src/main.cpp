@@ -836,12 +836,15 @@ bool wifiConnectionStatus(int counter)
     if(WiFi.isConnected())
     {
       status = true;
+      break;
     }
     else
     {
       delay(500);
       WiFi.reconnect();
       status = WiFi.isConnected();
+        if(status)
+          break;
     }
   }
 
@@ -983,6 +986,7 @@ bool MQTTconnectionStatus(bool wifiStatus, int counter)
       if(client.connected())
       {
         status = true;
+          break;
       }
       else
       {
@@ -990,7 +994,7 @@ bool MQTTconnectionStatus(bool wifiStatus, int counter)
         String clientId = "WeatherStationESP32";
 
         // Attempt to connect
-        if (client.connect(clientId.c_str()))
+        if(client.connect(clientId.c_str()))
         {
           Serial.println("MQTT connected");
           client.subscribe(TIME_TOPIC);
@@ -1007,6 +1011,7 @@ bool MQTTconnectionStatus(bool wifiStatus, int counter)
           client.subscribe(FORECAST3_TOPIC);
           client.subscribe(FORECAST4_TOPIC);
           client.subscribe(FORECAST5_TOPIC);
+          break;
         }
 
         else
