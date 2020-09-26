@@ -809,10 +809,10 @@ void setupWifi()
   Serial.print("Connecting to ");
   Serial.println(ssid);
 
-  tcpip_adapter_set_hostname(TCPIP_ADAPTER_IF_STA, DEVICE_NAME);
-
   WiFi.begin(ssid, password);
-  
+  WiFi.setHostname(DEVICE_NAME);
+  delay(100);
+
   while (WiFi.status() != WL_CONNECTED)
   {
     delay(500);
@@ -843,8 +843,8 @@ bool wifiConnectionStatus(int counter)
       delay(500);
       WiFi.reconnect();
       status = WiFi.isConnected();
-        if(status)
-          break;
+      if(status)
+        break;
     }
   }
 
@@ -986,7 +986,7 @@ bool MQTTconnectionStatus(bool wifiStatus, int counter)
       if(client.connected())
       {
         status = true;
-          break;
+        break;
       }
       else
       {

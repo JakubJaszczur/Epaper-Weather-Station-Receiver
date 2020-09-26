@@ -2,6 +2,8 @@
 const char* ssid = "";
 const char* password = "";
 
+#define DEVICE_NAME "WeatherStation"
+
 // Battery measurement settings
 
 #define BAT_PIN     33
