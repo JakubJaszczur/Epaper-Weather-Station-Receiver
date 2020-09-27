@@ -809,9 +809,10 @@ void setupWifi()
   Serial.print("Connecting to ");
   Serial.println(ssid);
 
-  tcpip_adapter_set_hostname(TCPIP_ADAPTER_IF_STA, DEVICE_NAME);
-
   WiFi.begin(ssid, password);
+  WiFi.setHostname(DEVICE_NAME);
+
+  delay(100);
   
   while (WiFi.status() != WL_CONNECTED)
   {

@@ -2,6 +2,8 @@
 const char* ssid = "";
 const char* password = "";
 
+#define DEVICE_NAME "WeatherStation"
+
 // Battery measurement settings
 
 #define BAT_PIN     33
@@ -18,7 +20,7 @@ const char* password = "";
 #define MAX_CO2     5000    // Max poziom
 
 // MQTT Settings
-const char* mqtt_server = "";
+const char* mqtt_server = "192.168.0.113";
 //const char* mqtt_user = "";
 //const char* mqtt_password = "";
 
