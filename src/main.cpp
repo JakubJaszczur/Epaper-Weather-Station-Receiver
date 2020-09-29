@@ -811,8 +811,14 @@ void setupWifi()
 
   WiFi.begin(ssid, password);
   WiFi.setHostname(DEVICE_NAME);
+<<<<<<< HEAD
   delay(100);
 
+=======
+
+  delay(100);
+  
+>>>>>>> 51ddd18775f5588a80e10a287f150c2a69a6db03
   while (WiFi.status() != WL_CONNECTED)
   {
     delay(500);
