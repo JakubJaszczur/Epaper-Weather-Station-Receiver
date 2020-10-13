@@ -79,6 +79,8 @@ bool MPC9808status = false;
 bool BME280status = false;
 bool CCS811status = false;
 
+unsigned long startTime = 0;
+
 // Battery measurement function
 
 float measureBattery()
@@ -850,6 +852,45 @@ bool wifiConnectionStatus(int counter)
 
   return status;
 }
+
+// SERVICE HANDLE
+
+String checkOnlineTime()
+{
+  unsigned long actualTime = millis() / 1000;
+  unsigned long onlineTime = actualTime - (startTime / 1000);
+
+  int days = onlineTime / 86400;
+  int hours = (onlineTime - days * 86400) / 3600;
+  int minutes = (onlineTime - days * 86400 - hours * 3600) / 60;
+
+  return String(days) + " d " + String(hours) + " h " + String(minutes) + " min";
+}
+
+void handleService(String command)
+{
+  char msg[50];
+  String toSend;
+
+  if(command == "RESTART")
+  {
+    client.publish(DEBUG_TOPIC, "Weather Station restart");
+    ESP.restart();
+  }
+  if(command == "SENSORS")
+  {
+    toSend = "MPC9808 " + String(MPC9808status) + ", BME280 " + String(BME280status) + ", CCS811 " + String(CCS811status);
+    toSend.toCharArray(msg, sizeof(msg));
+    client.publish(DEBUG_TOPIC, msg);
+  }
+  if(command == "STATUS")
+  {
+    toSend = "Online time: " + checkOnlineTime();
+    toSend.toCharArray(msg, sizeof(msg));
+    client.publish(DEBUG_TOPIC, msg);
+  }
+}
+
 // MQTT setup
 
 void callback(char* topic, byte* payload, unsigned int length)
@@ -999,7 +1040,8 @@ bool MQTTconnectionStatus(bool wifiStatus, int counter)
         String clientId = "WeatherStationESP32";
 
         // Attempt to connect
-        if(client.connect(clientId.c_str()))
+        //if(client.connect(clientId.c_str()))
+        if(client.connect(clientId.c_str(), mqtt_user, mqtt_password))
         {
           Serial.println("MQTT connected");
           client.subscribe(TIME_TOPIC);
@@ -1060,29 +1102,13 @@ void sendDataMQTT(float temperature, float humidity, float pressure, int co2Leve
   Serial.println("Message sent!");
 }
 
-// SERVICE HANDLE
-
-void handleService(String command)
-{
-  if(command == "RESTART")
-  {
-    client.publish(DEBUG_TOPIC, "Weather Station restart");
-    ESP.restart();
-  }
-  if(command == "STATUS")
-  {
-    char msg[50];
-    String toSend = "MPC9808 " + String(MPC9808status) + ", BME280 " + String(BME280status) + ", CCS811 " + String(CCS811status);
-    toSend.toCharArray(msg, sizeof(msg));
-    client.publish(DEBUG_TOPIC, msg);
-  }
-}
-
 // ******* MAIN SECTION *******
 
 
 void setup(void)
 {
+  startTime = millis();
+
   pinMode(LED_ON, OUTPUT);
   strip.begin();                      // INITIALIZE NeoPixel strip object (REQUIRED)
   strip.show();                       // Turn OFF all pixels

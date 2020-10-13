@@ -21,8 +21,8 @@ const char* password = "";
 
 // MQTT Settings
 const char* mqtt_server = "192.168.0.113";
-//const char* mqtt_user = "";
-//const char* mqtt_password = "";
+const char* mqtt_user = "mqttuser";
+const char* mqtt_password = "";
 
 #define MQTT_MAX_PACKET_SIZE 256
 
