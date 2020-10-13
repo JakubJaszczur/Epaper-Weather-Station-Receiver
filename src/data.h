@@ -147,6 +147,8 @@ const char* mqtt_server = "192.168.0.113";
 #define FORECAST3_TOPIC     "forecast3"
 #define FORECAST4_TOPIC     "forecast4"
 #define FORECAST5_TOPIC     "forecast5"
+#define SERVICE_TOPIC       "home/weatherstation/service"
 
 // MQTT Output topics
 #define PUBLISH_TOPIC       "home/station"
+#define DEBUG_TOPIC         "home/weatherstation/debug"

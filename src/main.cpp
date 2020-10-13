@@ -811,14 +811,8 @@ void setupWifi()
 
   WiFi.begin(ssid, password);
   WiFi.setHostname(DEVICE_NAME);
-<<<<<<< HEAD
   delay(100);
 
-=======
-
-  delay(100);
-  
->>>>>>> 51ddd18775f5588a80e10a287f150c2a69a6db03
   while (WiFi.status() != WL_CONNECTED)
   {
     delay(500);
@@ -979,6 +973,11 @@ void callback(char* topic, byte* payload, unsigned int length)
     forecast5Icon = atoi(icon5);
     forecastTemp5 = doc["temp5"];
   }
+    if(String(topic) == SERVICE_TOPIC)
+  {
+    String serviceString = String(messageBuffer);
+    handleService(serviceString);
+  }
 }
 
 bool MQTTconnectionStatus(bool wifiStatus, int counter)
@@ -1017,6 +1016,7 @@ bool MQTTconnectionStatus(bool wifiStatus, int counter)
           client.subscribe(FORECAST3_TOPIC);
           client.subscribe(FORECAST4_TOPIC);
           client.subscribe(FORECAST5_TOPIC);
+          client.subscribe(SERVICE_TOPIC);
           break;
         }
 
@@ -1060,6 +1060,23 @@ void sendDataMQTT(float temperature, float humidity, float pressure, int co2Leve
   Serial.println("Message sent!");
 }
 
+// SERVICE HANDLE
+
+void handleService(String command)
+{
+  if(command == "RESTART")
+  {
+    client.publish(DEBUG_TOPIC, "Weather Station restart");
+    ESP.restart();
+  }
+  if(command == "STATUS")
+  {
+    char msg[50];
+    String toSend = "MPC9808 " + String(MPC9808status) + ", BME280 " + String(BME280status) + ", CCS811 " + String(CCS811status);
+    toSend.toCharArray(msg, sizeof(msg));
+    client.publish(DEBUG_TOPIC, msg);
+  }
+}
 
 // ******* MAIN SECTION *******
 
