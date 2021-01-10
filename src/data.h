@@ -2,6 +2,8 @@
 const char* ssid = "";
 const char* password = "";
 
+#define DEVICE_NAME "WeatherStation"
+
 // Battery measurement settings
 
 #define BAT_PIN     33
@@ -18,9 +20,9 @@ const char* password = "";
 #define MAX_CO2     5000    // Max poziom
 
 // MQTT Settings
-const char* mqtt_server = "";
-//const char* mqtt_user = "";
-//const char* mqtt_password = "";
+const char* mqtt_server = "192.168.0.113";
+const char* mqtt_user = "mqttuser";
+const char* mqtt_password = "";
 
 #define MQTT_MAX_PACKET_SIZE 256
 
@@ -145,6 +147,14 @@ const char* mqtt_server = "";
 #define FORECAST3_TOPIC     "forecast3"
 #define FORECAST4_TOPIC     "forecast4"
 #define FORECAST5_TOPIC     "forecast5"
+<<<<<<< HEAD:src/data.h
 
 // MQTT Output topics
 #define PUBLISH_TOPIC       "home/station"
+=======
+#define SERVICE_TOPIC       "home/weatherstation/service"
+
+// MQTT Output topics
+#define PUBLISH_TOPIC       "home/station"
+#define DEBUG_TOPIC         "home/weatherstation/debug"
+>>>>>>> Unstable:Software/src/data.h
