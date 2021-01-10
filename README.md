@@ -211,8 +211,8 @@ Feedback will be send in DEBUG_TOPIC
 
 ### 7. Changelog
 
-2021-01-10 <b>V1.0</b> Stable version - little bit optimized, added STL files
-2020-08-25 <b>V0.1.5</b> Stable beta - not optimized, without STL files (Public)<br>
+2021-01-10 <b>V1.0</b> Stable version - little bit optimized, added STL files  
+2020-08-25 <b>V0.1.5</b> Stable beta - not optimized, without STL files (Public)  
 2020-08-11 <b>V0.1</b> First Beta Release - not optimized, without firmware code (private)
 
 
