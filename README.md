@@ -169,6 +169,7 @@ All MQTT subscribed topics should provide data in format:
 | WEATHER_ICON_TOPIC| String								| 1					| See picture below	|
 | FELT_TEMP_TOPIC	| String								| 31.56				|					|
 | FORECASTx_TOPIC	| JSON									| See example below |					|
+| SERVICE_TOPIC     | String                                | See service       |                   |
 
 Weather Icons codes
 
@@ -198,10 +199,19 @@ Parameters send by device in PUBLISH_TOPIC are in JSON format:
 "bat":4.174172
 }
 ```
+#### Service commands
 
+Some simple service commands can be send to Station using SERVICE_TOPIC:
+
+RESTART - force ESP restart  
+SENSORS - send sensors statuses, 1 if sensor was correctly initialized  
+STATUS - send online time  
+
+Feedback will be send in DEBUG_TOPIC
 
 ### 7. Changelog
 
+2021-01-10 <b>V1.0</b> Stable version - little bit optimized, added STL files
 2020-08-25 <b>V0.1.5</b> Stable beta - not optimized, without STL files (Public)<br>
 2020-08-11 <b>V0.1</b> First Beta Release - not optimized, without firmware code (private)
 
@@ -209,14 +219,9 @@ Parameters send by device in PUBLISH_TOPIC are in JSON format:
 ### 8. Task list
 
 - Software:
-- [ ] Firmware code optimization
-- [ ] Service commands (e.g. for temperature calibration)
-- [ ] RTC support to keep date/time
+- [X] Firmware code optimization
+- [X] Service commands (sensors statuses, online time)
 - [X] Battery voltage measurements
-- [ ] WiFi manager with input settings
-
-- Hardware:
-- [ ] Change NeoPixel data MOSFET to AND gate (SN74AHC1G08DBVR)
 
 
 ## 9. Pictures

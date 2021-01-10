@@ -1,9 +1,10 @@
 // ************************************* //
 // ** Epaper Weather Station Receiver ** //
-// ***** Version 0.2 ** 2020-08-25 ***** //
+// ***** Version 1.0 ** 2021-01-10 ***** //
 // ************************************* //
 
-// 2020-08-25 Optimalisation
+// 2021-01-10 Added service commands, optimalization
+// 2020-08-25 Optimalization
 
 #include <Arduino.h>
 #include <GxEPD.h>
